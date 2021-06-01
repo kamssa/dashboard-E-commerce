@@ -196,6 +196,9 @@ public class ArtcleController {
 		Image image = new Image();
 		image.setIdArticles(id);
 		image.setPath((String) result.get("url"));
+		imageMetier.creer(image);
+		
+		//imageMetier.modifier(img);
 		return new ResponseEntity(result, HttpStatus.OK);
 	}
 }
