@@ -71,5 +71,10 @@ private ProduitRepository produitRepository;
 		// TODO Auto-generated method stub
 		return null;
 	}
+	@Override
+	public List<SousCategories> findSousCategoriesByIdCategorie(long id) {
+		// TODO Auto-generated method stub
+		return sousCategorieRepository.findSousCategoriesByIdCategorie(id);
+	}
 
 }

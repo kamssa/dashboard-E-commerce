@@ -18,6 +18,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ci.gstoreplus.entity.catalogue.Categories;
+import ci.gstoreplus.entity.catalogue.Produits;
 import ci.gstoreplus.entity.catalogue.SousCategories;
 import ci.gstoreplus.exception.InvalideGstoreException;
 import ci.gstoreplus.metier.catalogue.ICategorieMetier;
@@ -119,6 +120,24 @@ public class SousCategorieController {
 
 		return jsonMapper.writeValueAsString(reponse);
 
+	}
+	@GetMapping("/sousCategorieByIdCategorie/{id}")
+	public String getByIdSousCategorieByIdCat(@PathVariable Long id) throws JsonProcessingException {
+		Reponse<List<SousCategories>> reponse;
+		try {
+			List<SousCategories> sousCategories = sousCategorieMetier.findSousCategoriesByIdCategorie(id);
+			if (!sousCategories.isEmpty()) {
+				reponse = new Reponse<List<SousCategories>>(0, null, sousCategories);
+			} else {
+				List<String> messages = new ArrayList<>();
+				messages.add("Pas d'abonnés enregistrées");
+				reponse = new Reponse<List<SousCategories>>(1, messages, new ArrayList<>());
+			}
+
+		} catch (Exception e) {
+			reponse = new Reponse<>(1, Static.getErreursForException(e), null);
+		}
+		return jsonMapper.writeValueAsString(reponse);
 	}
 
         //get all categories
