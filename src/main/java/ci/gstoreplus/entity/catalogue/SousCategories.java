@@ -7,6 +7,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -19,6 +20,9 @@ public class SousCategories extends AbstractEntity {
 	private static final long serialVersionUID = 1L;
 
 	private String nom;
+	@ManyToOne(fetch = FetchType.LAZY, cascade =CascadeType.MERGE)
+	@JoinColumn(name = "fk_Categorie", nullable = false)
+	private Categories categories;
     public SousCategories() {
 }
 	
@@ -30,12 +34,29 @@ public class SousCategories extends AbstractEntity {
 	}
 
 
+	public SousCategories(String nom, Categories categories) {
+		super();
+		this.nom = nom;
+		this.categories = categories;
+	}
+
+
 	public String getNom() {
 		return nom;
 	}
 
 	public void setNom(String nom) {
 		this.nom = nom;
+	}
+
+
+	public Categories getCategories() {
+		return categories;
+	}
+
+
+	public void setCategories(Categories categories) {
+		this.categories = categories;
 	}
 
 
