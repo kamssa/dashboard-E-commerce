@@ -1,35 +1,36 @@
 package ci.gstoreplus.entity.catalogue;
 
 import javax.persistence.Entity;
+
 import ci.gstoreplus.entity.shared.AbstractEntity;
 
 @Entity
-public class Image extends AbstractEntity {
+public class ImageDetail extends AbstractEntity{
 
+	
 	private static final long serialVersionUID = 1L;
-	private Long idArticles;
-	private String nom;
+	private Long idDetailArticle;
 	private String imageUrl;
 	private String imageId;
-
-	public Image() {
+	
+	public ImageDetail() {
 		super();
+		// TODO Auto-generated constructor stub
 	}
 
-	public Long getIdArticles() {
-		return idArticles;
+	public ImageDetail(Long idDetailArticle, String imageUrl, String imageId) {
+		super();
+		this.idDetailArticle = idDetailArticle;
+		this.imageUrl = imageUrl;
+		this.imageId = imageId;
 	}
 
-	public void setIdArticles(Long idArticles) {
-		this.idArticles = idArticles;
+	public Long getIdDetailArticle() {
+		return idDetailArticle;
 	}
 
-	public String getNom() {
-		return nom;
-	}
-
-	public void setNom(String nom) {
-		this.nom = nom;
+	public void setIdDetailArticle(Long idDetailArticle) {
+		this.idDetailArticle = idDetailArticle;
 	}
 
 	public String getImageUrl() {
@@ -47,5 +48,7 @@ public class Image extends AbstractEntity {
 	public void setImageId(String imageId) {
 		this.imageId = imageId;
 	}
-
+	
+	
+    
 }

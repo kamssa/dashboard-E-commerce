@@ -8,7 +8,6 @@ public class Adresse {
     private String mail;
 	private String pays;
 	private String ville;
-	private String siteWeb;
 	
 	public String getBoitePostal() {
 		return boitePostal;
@@ -18,15 +17,14 @@ public class Adresse {
 		super();
 	}
 
-public Adresse(String boitePostal, String mail, String pays, String ville, String siteWeb) {
+public Adresse(String boitePostal, String mail, String pays, String ville) {
 		super();
 		this.boitePostal = boitePostal;
 		this.mail = mail;
 		this.pays = pays;
 		this.ville = ville;
-		this.siteWeb = siteWeb;
 		
-	}
+}
 
 	public void setBoitePostal(String boitePostal) {
 		this.boitePostal = boitePostal;
@@ -50,11 +48,5 @@ public Adresse(String boitePostal, String mail, String pays, String ville, Strin
 		this.ville = ville;
 	}
 	
-	public String getSiteWeb() {
-		return siteWeb;
-	}
-	public void setSiteWeb(String siteWeb) {
-		this.siteWeb = siteWeb;
-	}
 	
 }

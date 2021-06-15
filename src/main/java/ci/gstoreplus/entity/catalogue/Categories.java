@@ -1,6 +1,13 @@
 package ci.gstoreplus.entity.catalogue;
 
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+
 
 import ci.gstoreplus.entity.shared.AbstractEntity;
 
@@ -9,40 +16,36 @@ public class Categories extends AbstractEntity {
 	
 	private static final long serialVersionUID = 7716507459244162067L;
 	private String nom;
-	private String description;
+	@OneToMany(fetch= FetchType.EAGER, cascade= CascadeType.ALL)
+	@JoinColumn(name = "fk_Categories")
+	private List<SousCategories> SousCategories = new ArrayList<>();
 	public Categories() {
 		super();
 	}
-	public Categories(String nom, String description) {
+	
+	public Categories(String nom, List<SousCategories> sousCategories) {
 		super();
 		this.nom = nom;
-		this.description = description;
-		}
-	public Long getId() {
-		return id;
+		SousCategories = sousCategories;
 	}
-	public void setId(Long id) {
-		this.id = id;
-	}
+
 	public String getNom() {
 		return nom;
 	}
 	public void setNom(String nom) {
 		this.nom = nom;
 	}
-	public String getDescription() {
-		return description;
+	public List<SousCategories> getSousCategories() {
+		return SousCategories;
 	}
-	public void setDescription(String description) {
-		this.description = description;
+	public void setSousCategories(List<SousCategories> sousCategories) {
+		SousCategories = sousCategories;
 	}
-	
-	public Long getVersion() {
-		return version;
-	}
+
 	@Override
 	public String toString() {
-		return "Categories [nom=" + nom + ", description=" + description + "]";
+		return "Categories [nom=" + nom + ", SousCategories=" + SousCategories + "]";
 	}
+	
 
 }

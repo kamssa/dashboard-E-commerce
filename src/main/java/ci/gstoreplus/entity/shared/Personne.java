@@ -55,10 +55,10 @@ public class Personne extends AbstractEntity {
     @NotBlank
     @Email
 	private String email;
+	private String codePays;
 	@Column(unique= true)
 	private String telephone;
 	private String password;
-	private String fonction;
 	private String nomComplet;
 	private boolean actived;
 	@Embedded
@@ -130,6 +130,14 @@ public class Personne extends AbstractEntity {
 		this.actived = actived;
 	}
 
+	public String getCodePays() {
+		return codePays;
+	}
+
+	public void setCodePays(String codePays) {
+		this.codePays = codePays;
+	}
+
 	public String getTelephone() {
 		return telephone;
 	}
@@ -138,10 +146,7 @@ public class Personne extends AbstractEntity {
 		return password;
 	}
 
-	public String getFonction() {
-		return fonction;
-	}
-
+	
 	public String getNomComplet() {
 		return nomComplet;
 	}
@@ -183,9 +188,7 @@ public class Personne extends AbstractEntity {
 		this.password = password;
 	}
 
-	public void setFonction(String fonction) {
-		this.fonction = fonction;
-	}
+
 
 	public void setNomComplet(String nomComplet) {
 		this.nomComplet = nomComplet;
@@ -201,9 +204,10 @@ public class Personne extends AbstractEntity {
 
 	@Override
 	public String toString() {
-		return "Personne [titre=" + titre + ", nom=" + nom + ", prenom=" + prenom + ", email=" + email + ", password="
-				+ password + ", fonction=" + fonction + ", nomComplet=" + nomComplet + ", adresse=" + adresse
-				+ ", roles=" + roles + "]";
+		return "Personne [titre=" + titre + ", nom=" + nom + ", prenom=" + prenom + ", email=" + email + ", telephone="
+				+ telephone + ", password=" + password + ", nomComplet=" + nomComplet + ", actived=" + actived
+				+ ", adresse=" + adresse + ", type=" + type + ", roles=" + roles + "]";
 	}
+
 
 }

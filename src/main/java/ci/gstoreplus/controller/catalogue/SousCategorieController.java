@@ -18,87 +18,88 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ci.gstoreplus.entity.catalogue.Categories;
-import ci.gstoreplus.entity.catalogue.Produits;
+import ci.gstoreplus.entity.catalogue.SousCategories;
 import ci.gstoreplus.exception.InvalideGstoreException;
-import ci.gstoreplus.metier.catalogue.IProduitMetier;
+import ci.gstoreplus.metier.catalogue.ICategorieMetier;
+import ci.gstoreplus.metier.catalogue.ISousCategorieMetier;
 import ci.gstoreplus.models.Reponse;
 import ci.gstoreplus.utilitaire.Static;
 
 @RestController
 @RequestMapping("/api")
 @CrossOrigin
-public class ProduitController {
+public class SousCategorieController {
 	@Autowired
-	private IProduitMetier produitMetier;
+	private ISousCategorieMetier sousCategorieMetier;
 
 	@Autowired
 	private ObjectMapper jsonMapper;
 
 // recuper categorie par identifiant
-	private Reponse<Produits> getProduitById(Long id) {
-		Produits produits = null;
+	private Reponse<SousCategories> getSousCategoriesById(Long id) {
+		SousCategories sc = null;
 
 		try {
-			produits = produitMetier.findById(id);
-			if (produits == null) {
+			sc = sousCategorieMetier.findById(id);
+			if (sc == null) {
 				List<String> messages = new ArrayList<>();
-				messages.add(String.format("Le produit n'existe pas", id));
-				new Reponse<Produits>(2, messages, null);
+				messages.add(String.format("La sous catégorie n'existe pas", id));
+				new Reponse<Categories>(2, messages, null);
 
 			}
 		} catch (RuntimeException e) {
-			new Reponse<Produits>(1, Static.getErreursForException(e), null);
+			new Reponse<Categories>(1, Static.getErreursForException(e), null);
 		}
 
-		return new Reponse<Produits>(0, null, produits);
+		return new Reponse<SousCategories>(0, null, sc);
 	}
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////// enregistrer une categories  dans la base de donnee
 ////////////////////////////////////////////////////////////////////////////////////////////// donnee////////////////////////////////
 
-	@PostMapping("/produit")
-	public String creer(@RequestBody Produits produits) throws JsonProcessingException {
-		Reponse<Produits> reponse;
-		System.out.println(produits);
+	@PostMapping("/sousCategories")
+	public String creer(@RequestBody SousCategories sc) throws JsonProcessingException {
+		Reponse<SousCategories> reponse;
+		System.out.println(sc);
 		try {
 
-			Produits prod = produitMetier.creer(produits);
+			SousCategories scat = sousCategorieMetier.creer(sc);
 			List<String> messages = new ArrayList<>();
-			messages.add(String.format("%s  à été créer avec succes", prod.getNom()));
-			reponse = new Reponse<Produits>(0, messages, prod);
+			messages.add(String.format("%s  à été créer avec succes", scat.getNom()));
+			reponse = new Reponse<SousCategories>(0, messages, scat);
 
 		} catch (InvalideGstoreException e) {
 
-			reponse = new Reponse<Produits>(1, Static.getErreursForException(e), null);
+			reponse = new Reponse<SousCategories>(1, Static.getErreursForException(e), null);
 		}
 		return jsonMapper.writeValueAsString(reponse);
 	}
 
-	@PutMapping("/produit")
-	public String update(@RequestBody Produits modif) throws JsonProcessingException {
+	@PutMapping("/sousCategories")
+	public String update(@RequestBody SousCategories modif) throws JsonProcessingException {
 
-		Reponse<Produits> reponse = null;
-		Reponse<Produits> reponsePersModif = null;
+		Reponse<SousCategories> reponse = null;
+		Reponse<SousCategories> reponsePersModif = null;
 		// on recupere abonnement a modifier
 		System.out.println("modif recupere1:" + modif);
-		reponsePersModif = getProduitById(modif.getId());
+		reponsePersModif = getSousCategoriesById(modif.getId());
 		if (reponsePersModif.getBody() != null) {
 			try {
 				System.out.println("modif recupere2:" + modif);
-				Produits produit = produitMetier.modifier(modif);
+				SousCategories sc = sousCategorieMetier.modifier(modif);
 				List<String> messages = new ArrayList<>();
-				messages.add(String.format("%s a modifier avec succes", produit.getId()));
-				reponse = new Reponse<Produits>(0, messages, produit);
+				messages.add(String.format("%s a modifier avec succes", sc.getId()));
+				reponse = new Reponse<SousCategories>(0, messages, sc);
 			} catch (InvalideGstoreException e) {
 
-				reponse = new Reponse<Produits>(1, Static.getErreursForException(e), null);
+				reponse = new Reponse<SousCategories>(1, Static.getErreursForException(e), null);
 			}
 
 		} else {
 			List<String> messages = new ArrayList<>();
-			messages.add(String.format("La catégories n'existe pas"));
-			reponse = new Reponse<Produits>(0, messages, null);
+			messages.add(String.format("La sous catégories n'existe pas"));
+			reponse = new Reponse<SousCategories>(0, messages, null);
 		}
 
 		return jsonMapper.writeValueAsString(reponse);
@@ -106,50 +107,32 @@ public class ProduitController {
 	}
 
     ////////recuperer une categorie  par son id
-	@GetMapping("/produit/{id}")
+	@GetMapping("/sousCategories/{id}")
 	public String getById(@PathVariable Long id) throws JsonProcessingException {
 		// Annotation @PathVariable permet de recuperer le paremettre dans URI
-		Reponse<Produits> reponse = null;
+		Reponse<SousCategories> reponse = null;
 
-		reponse = getProduitById(id);
+		reponse = getSousCategoriesById(id);
 		if (reponse.getBody() == null) {
-			throw new RuntimeException("pas d'enregistrement pour ce produit");
+			throw new RuntimeException("pas d'enregistrement pour cette sous catégorie");
 		}
 
 		return jsonMapper.writeValueAsString(reponse);
 
-	}
-	@GetMapping("/produitByIdCategorie/{id}")
-	public String getByIdSousCategorie(@PathVariable Long id) throws JsonProcessingException {
-		Reponse<List<Produits>> reponse;
-		try {
-			List<Produits> produits = produitMetier.findProduitsByIdSousCategorie(id);
-			if (!produits.isEmpty()) {
-				reponse = new Reponse<List<Produits>>(0, null, produits);
-			} else {
-				List<String> messages = new ArrayList<>();
-				messages.add("Pas d'abonnés enregistrées");
-				reponse = new Reponse<List<Produits>>(1, messages, new ArrayList<>());
-			}
-
-		} catch (Exception e) {
-			reponse = new Reponse<>(1, Static.getErreursForException(e), null);
-		}
-		return jsonMapper.writeValueAsString(reponse);
 	}
 
         //get all categories
-	@GetMapping("/produit")
+	@GetMapping("/sousCategories")
 	public String findAll() throws JsonProcessingException {
-		Reponse<List<Produits>> reponse;
+		Reponse<List<SousCategories>> reponse;
 		try {
-			List<Produits> produits = produitMetier.findAll();
-			if (!produits.isEmpty()) {
-				reponse = new Reponse<List<Produits>>(0, null, produits);
+			List<SousCategories> sc = sousCategorieMetier.findAll();
+			if (!sc.isEmpty()) {
+				reponse = new Reponse<List<SousCategories>>(0, null, sc);
 			} else {
 				List<String> messages = new ArrayList<>();
 				messages.add("Pas d'abonnés enregistrées");
-				reponse = new Reponse<List<Produits>>(1, messages, new ArrayList<>());
+				reponse = new Reponse<List<SousCategories>>(1, messages, new ArrayList<>());
 			}
 
 		} catch (Exception e) {
@@ -159,14 +142,14 @@ public class ProduitController {
 
 	}
 	// supprimer une categorie
-		@DeleteMapping("/produit/{id}")
+		@DeleteMapping("/sousCategories/{id}")
 		public String supprimer(@PathVariable("id") Long id) throws JsonProcessingException {
 
 			Reponse<Boolean> reponse = null;
 
 			try {
 
-				reponse = new Reponse<Boolean>(0, null, produitMetier.supprimer(id));
+				reponse = new Reponse<Boolean>(0, null, sousCategorieMetier.supprimer(id));
 
 			} catch (RuntimeException e1) {
 				reponse = new Reponse<>(3, Static.getErreursForException(e1), null);
@@ -174,5 +157,4 @@ public class ProduitController {
 
 			return jsonMapper.writeValueAsString(reponse);
 		}
-
 }

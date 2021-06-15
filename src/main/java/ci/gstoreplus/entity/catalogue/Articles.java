@@ -16,8 +16,12 @@ public class Articles extends AbstractEntity {
 	private String code;
 	private String nom;
 	private String description;
+	private String promo;
+	private String nouveau;
+
 	@Column(name = "prix_unitaire")
 	private double prixUnitaire;
+	private String pathImage;
 	@ManyToOne(fetch = FetchType.LAZY, cascade =CascadeType.MERGE)
 	@JoinColumn(name = "id_produits", nullable = false)
 	private Produits produits;
@@ -43,6 +47,23 @@ public class Articles extends AbstractEntity {
 
 	public void setCode(String code) {
 		this.code = code;
+	}
+
+	
+	public String getPromo() {
+		return promo;
+	}
+
+	public void setPromo(String promo) {
+		this.promo = promo;
+	}
+
+	public String getNouveau() {
+		return nouveau;
+	}
+
+	public void setNouveau(String nouveau) {
+		this.nouveau = nouveau;
 	}
 
 	public String getNom() {
@@ -82,6 +103,14 @@ public class Articles extends AbstractEntity {
 	
 	public void setProduits(Produits produits) {
 		this.produits = produits;
+	}
+
+	public String getPathImage() {
+		return pathImage;
+	}
+
+	public void setPathImage(String pathImage) {
+		this.pathImage = pathImage;
 	}
 
 	@Override

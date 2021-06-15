@@ -17,7 +17,6 @@ import com.cloudinary.Transformation;
 import com.cloudinary.utils.ObjectUtils;
 import java.io.InputStream;
 import java.net.URL;
-import java.net.URLConnection;
 import org.springframework.http.HttpHeaders;
 
 @Service

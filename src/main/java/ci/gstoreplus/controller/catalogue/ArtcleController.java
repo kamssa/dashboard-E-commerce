@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -23,10 +24,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ci.gstoreplus.entity.catalogue.Articles;
 import ci.gstoreplus.entity.catalogue.Image;
+import ci.gstoreplus.entity.catalogue.Produits;
 import ci.gstoreplus.exception.InvalideGstoreException;
 import ci.gstoreplus.metier.catalogue.CloudinaryService;
 import ci.gstoreplus.metier.catalogue.IArticleMetier;
 import ci.gstoreplus.metier.catalogue.ImageMetier;
+import ci.gstoreplus.metier.catalogue.ImageService;
 import ci.gstoreplus.models.Reponse;
 import ci.gstoreplus.utilitaire.Static;
 
@@ -37,7 +40,7 @@ public class ArtcleController {
 	@Autowired
 	private IArticleMetier articleMetier;
 	@Autowired
-	private ImageMetier imageMetier;
+	private ImageService imageSevice;
 	@Autowired
 	private ObjectMapper jsonMapper;
 	@Autowired
@@ -167,38 +170,51 @@ public class ArtcleController {
 		return jsonMapper.writeValueAsString(reponse);
 	}
 
-////////////get photo par id d'une travaux
-	@GetMapping("/image/{idArticles}")
-	public String getPhotoByIdArticle(@PathVariable("idArticles") long idArticles)
-			throws JsonProcessingException, InvalideGstoreException {
-		Reponse<List<Image>> reponse;
-		try {
-			List<Image> photos = imageMetier.findByIdArticles(idArticles);
-			if (!photos.isEmpty()) {
-				reponse = new Reponse<List<Image>>(0, null, photos);
-			} else {
-				List<String> messages = new ArrayList<>();
-				messages.add("Pas de photos enregistrées");
-				reponse = new Reponse<List<Image>>(1, messages, new ArrayList<>());
-			}
 
-		} catch (Exception e) {
-			reponse = new Reponse<List<Image>>(1, Static.getErreursForException(e), new ArrayList<>());
-		}
-		return jsonMapper.writeValueAsString(reponse);
-
-	}
 	// solution alterntive cloudinary//////////////////////////
 	@PostMapping("/upload")
 	public ResponseEntity<?> upload(@RequestParam MultipartFile multipartFile,
-			@RequestParam Long id) throws IOException, InvalideGstoreException{
+			@RequestParam Long id) throws IOException, InvalideGstoreException
+	{
 		Map result = cloudinaryService.upload(multipartFile);
-		Image image = new Image();
-		image.setIdArticles(id);
-		image.setPath((String) result.get("url"));
-		imageMetier.creer(image);
+		Articles article = articleMetier.findById(id);
+		article.setPathImage((String) result.get("url"));
+		articleMetier.modifier(article);
 		
-		//imageMetier.modifier(img);
 		return new ResponseEntity(result, HttpStatus.OK);
+	}
+	
+	@GetMapping("/downloadImg/{publicId}")
+     public ResponseEntity<ByteArrayResource> downloadImg(@PathVariable String publicId) {
+        return cloudinaryService.downloadImg(publicId);
+    }
+	// supp image
+	@DeleteMapping("/delete/{id}")
+	public ResponseEntity<?> delete(@PathVariable("id") Long id) throws IOException{
+		if(!imageSevice.exists(id)) {
+			new InvalideGstoreException("l'image n'xiste pas");
+		}
+		Image image = imageSevice.findById(id).get();
+		Map result = cloudinaryService.delete(image.getImageId());
+		imageSevice.deleteById(id);
+		return new ResponseEntity(new InvalideGstoreException("image supprimée"), HttpStatus.OK);
+	}
+	@GetMapping("/articleByIdProduit/{id}")
+	public String getByIdProduit(@PathVariable Long id) throws JsonProcessingException {
+		Reponse<List<Articles>> reponse;
+		try {
+			List<Articles> articles = articleMetier.findArtclesByIdProduits(id);
+			if (!articles.isEmpty()) {
+				reponse = new Reponse<List<Articles>>(0, null, articles);
+			} else {
+				List<String> messages = new ArrayList<>();
+				messages.add("Pas d'articles enregistrées");
+				reponse = new Reponse<List<Articles>>(1, messages, new ArrayList<>());
+			}
+
+		} catch (Exception e) {
+			reponse = new Reponse<>(1, Static.getErreursForException(e), null);
+		}
+		return jsonMapper.writeValueAsString(reponse);
 	}
 }

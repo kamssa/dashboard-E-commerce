@@ -59,8 +59,12 @@ private ArticleRepository articleRepository;
 
 	@Override
 	public Boolean existsByEmail(String email) {
-		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public List<Articles> findArtclesByIdProduits(long id) {
+		return articleRepository.findArtclesByIdProduits(id);
 	}
 
 }

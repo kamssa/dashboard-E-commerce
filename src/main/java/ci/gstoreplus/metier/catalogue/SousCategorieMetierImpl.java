@@ -4,46 +4,52 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import ci.gstoreplus.dao.catalogue.ProduitRepository;
-import ci.gstoreplus.entity.catalogue.Produits;
+import ci.gstoreplus.dao.catalogue.SousCategorieRepository;
+import ci.gstoreplus.entity.catalogue.SousCategories;
 import ci.gstoreplus.exception.InvalideGstoreException;
 
 @Service
-public class ProduitMetierImpl implements IProduitMetier{
+public class SousCategorieMetierImpl  implements ISousCategorieMetier{
+@Autowired
+private SousCategorieRepository sousCategorieRepository;
 @Autowired
 private ProduitRepository produitRepository;
+
 	@Override
-	public Produits creer(Produits entity) throws InvalideGstoreException {
-		return produitRepository.save(entity);
+	public SousCategories creer(SousCategories entity) throws InvalideGstoreException {
+		// TODO Auto-generated method stub
+		return sousCategorieRepository.save(entity);
+	}
+    @Transactional
+	@Override
+	public SousCategories modifier(SousCategories entity) throws InvalideGstoreException {
+		// TODO Auto-generated method stub
+		return sousCategorieRepository.save(entity);
 	}
 
 	@Override
-	public Produits modifier(Produits entity) throws InvalideGstoreException {
+	public List<SousCategories> findAll() {
 		// TODO Auto-generated method stub
-		return produitRepository.save(entity);
+		return sousCategorieRepository.findAll();
 	}
 
 	@Override
-	public List<Produits> findAll() {
+	public SousCategories findById(Long id) {
 		// TODO Auto-generated method stub
-		return produitRepository.findAll();
-	}
-
-	@Override
-	public Produits findById(Long id) {
-		// TODO Auto-generated method stub
-		return produitRepository.findById(id).get();
+		return sousCategorieRepository.findById(id).get();
 	}
 
 	@Override
 	public boolean supprimer(Long id) {
-		produitRepository.deleteById(id);
-		return true;
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	@Override
-	public boolean supprimer(List<Produits> entites) {
+	public boolean supprimer(List<SousCategories> entites) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -65,13 +71,5 @@ private ProduitRepository produitRepository;
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
-	public List<Produits> findProduitsByIdSousCategorie(long id) {
-		// TODO Auto-generated method stub
-		return produitRepository.findProduitsByIdSousCategorie(id);
-	}
-
-	
 
 }
