@@ -42,8 +42,11 @@ import ci.gstoreplus.entity.client.Client;
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "TYPE_PERSONNE", discriminatorType = DiscriminatorType.STRING, length = 2)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonSubTypes({ @Type(name = "AD", value = Admin.class), @Type(name = "EM", value = Employe.class),
-		@Type(name = "Cl", value = Client.class) })
+@JsonSubTypes({ 
+	         @Type(name = "AD", value = Admin.class),
+	         @Type(name = "EM", value = Employe.class),
+	     	 @Type(name = "CL", value = Client.class) 
+	         })
 public class Personne extends AbstractEntity {
 
 	private static final long serialVersionUID = 1L;

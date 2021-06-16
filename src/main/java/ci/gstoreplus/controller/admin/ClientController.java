@@ -75,8 +75,6 @@ public class ClientController {
 	@PostMapping("/signupc")
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public String creatUser(@RequestBody Personne signUpRequest) throws Exception {
-		
-
 		Reponse<Personne> reponse = null;
 		Personne personne = null;
 		try {

@@ -2,7 +2,10 @@ package ci.gstoreplus.metiers;
 
 import java.util.List;
 
+import ci.gstoreplus.entity.commande.Commande;
+import ci.gstoreplus.entity.shared.Personne;
 import ci.gstoreplus.exception.InvalideGstoreException;
+import ci.gstoreplus.metier.commande.OrderForm;
 
 
 
@@ -27,5 +30,6 @@ public interface Imetier <T,U>{
 	Boolean existsByPseudo(String pseudo);
 
 	Boolean existsByEmail(String email);
+
 
 }

@@ -10,6 +10,7 @@ import javax.persistence.OneToOne;
 
 import ci.gstoreplus.entity.client.Client;
 import ci.gstoreplus.entity.shared.AbstractEntity;
+import ci.gstoreplus.entity.shared.Personne;
 
 @Entity
 public class Commande extends AbstractEntity {
@@ -20,19 +21,19 @@ public class Commande extends AbstractEntity {
     @OneToMany(mappedBy = "commande")
     private Collection<LigneDeCommande> ligneDeCommande;
     @ManyToOne
-    private Client client;
+    private Personne personne;
     private double totalAmount;
     @OneToOne
     private Paiement payment;
 	public Commande() {
 		super();
 	}
-	public Commande(Date date, Collection<LigneDeCommande> ligneDeCommande, Client client, double totalAmount,
+	public Commande(Date date, Collection<LigneDeCommande> ligneDeCommande, Personne personne, double totalAmount,
 			Paiement payment) {
 		super();
 		this.date = date;
 		this.ligneDeCommande = ligneDeCommande;
-		this.client = client;
+		this.personne = personne;
 		this.totalAmount = totalAmount;
 		this.payment = payment;
 	}
@@ -48,11 +49,12 @@ public class Commande extends AbstractEntity {
 	public void setLigneDeCommande(Collection<LigneDeCommande> ligneDeCommande) {
 		this.ligneDeCommande = ligneDeCommande;
 	}
-	public Client getClient() {
-		return client;
+	
+	public Personne getPersonne() {
+		return personne;
 	}
-	public void setClient(Client client) {
-		this.client = client;
+	public void setPersonne(Personne personne) {
+		this.personne = personne;
 	}
 	public double getTotalAmount() {
 		return totalAmount;
