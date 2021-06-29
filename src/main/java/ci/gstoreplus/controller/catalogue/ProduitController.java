@@ -1,7 +1,12 @@
 package ci.gstoreplus.controller.catalogue;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.imageio.IIOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -19,9 +24,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ci.gstoreplus.entity.catalogue.Categories;
 import ci.gstoreplus.entity.catalogue.Produits;
+import ci.gstoreplus.entity.catalogue.SousCategories;
 import ci.gstoreplus.exception.InvalideGstoreException;
 import ci.gstoreplus.metier.catalogue.IProduitMetier;
 import ci.gstoreplus.models.Reponse;
+import ci.gstoreplus.models.ReponseProduits;
 import ci.gstoreplus.utilitaire.Static;
 
 @RestController
@@ -174,5 +181,23 @@ public class ProduitController {
 
 			return jsonMapper.writeValueAsString(reponse);
 		}
+////////////get distinct abonnement
+@GetMapping("/getDistinctSc")
+public Map<String, List<Produits>> getOccurenceAbonne() throws JsonProcessingException, InvalideGstoreException {
+	Map<String, List<Produits>> reponse = new HashMap<String, List<Produits>>();
+	  SousCategories sc = null;
+      Categories c = null;
+      Produits prod = null;
+	try {
+		Map<String, List<Produits>> pers = produitMetier.uneOcurrenceAbonne();
+		reponse = pers;
+
+	} catch (Exception e) {
+		reponse = (Map<String, List<Produits>>) new IOException("");
+	}
+	return reponse;
+
+}
+
 
 }

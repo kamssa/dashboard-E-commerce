@@ -16,6 +16,7 @@ public class LigneDeCommande extends AbstractEntity{
 	    private Articles articles;
 	    private int quantity;
 	    private double price;
+	    private double total;
 	    @ManyToOne
 	    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	    private Commande commande;
@@ -52,6 +53,18 @@ public class LigneDeCommande extends AbstractEntity{
 		}
 		public void setCommande(Commande commande) {
 			this.commande = commande;
+		}
+		
+		public double getTotal() {
+			return total;
+		}
+		public void setTotal(double total) {
+			this.total = total;
+		}
+		@Override
+		public String toString() {
+			return "LigneDeCommande [articles=" + articles + ", quantity=" + quantity + ", price=" + price
+					+ ", commande=" + commande + "]";
 		}
 
 }

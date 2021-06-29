@@ -11,6 +11,7 @@ import ci.gstoreplus.entity.catalogue.Articles;
 public interface ArticleRepository extends JpaRepository<Articles, Long>{
 	@Query("select a from Articles a  where a.produits.id=?1")
 	List<Articles> findArtclesByIdProduits(long id);
-	@Query("SELECT COUNT(*) FROM Articles")
-	int nobreElemnt();
+	 @Query("select a from Articles a where a.nom LIKE %?1%")
+     List<Articles> findArtclesByMc(String nom);
+
 }

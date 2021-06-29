@@ -15,6 +15,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import ci.gstoreplus.dao.admin.PersonneRepository;
 import ci.gstoreplus.dao.admin.RoleRepository;
+import ci.gstoreplus.entity.admin.Admin;
+import ci.gstoreplus.entity.shared.Role;
+import ci.gstoreplus.entity.shared.RoleName;
 
 
 

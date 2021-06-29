@@ -6,6 +6,6 @@ import ci.gstoreplus.exception.InvalideGstoreException;
 import ci.gstoreplus.metiers.Imetier;
 
 public interface IOrderMetier extends Imetier<Commande, Long>{
-	Commande creer(Personne client, OrderForm orderForm) throws InvalideGstoreException;
+	Commande creer(OrderForm orderForm) throws InvalideGstoreException;
 
 }

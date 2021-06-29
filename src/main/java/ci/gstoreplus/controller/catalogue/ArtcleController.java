@@ -20,15 +20,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import ci.gstoreplus.entity.catalogue.Articles;
 import ci.gstoreplus.entity.catalogue.Image;
-import ci.gstoreplus.entity.catalogue.Produits;
 import ci.gstoreplus.exception.InvalideGstoreException;
 import ci.gstoreplus.metier.catalogue.CloudinaryService;
 import ci.gstoreplus.metier.catalogue.IArticleMetier;
-import ci.gstoreplus.metier.catalogue.ImageMetier;
 import ci.gstoreplus.metier.catalogue.ImageService;
 import ci.gstoreplus.models.Reponse;
 import ci.gstoreplus.utilitaire.Static;
@@ -217,4 +217,49 @@ public class ArtcleController {
 		}
 		return jsonMapper.writeValueAsString(reponse);
 	}
+////////rechercher un travail par mot cle
+@GetMapping("/rechemc")
+public String chercherTravauxByMc(@RequestParam(value = "mc") String mc) throws JsonProcessingException {
+
+	Reponse<List<Articles>> reponse;
+	try {
+		List<Articles> articles = articleMetier.findArtclesByMc(mc);
+
+		if (!articles.isEmpty()) {
+			reponse = new Reponse<List<Articles>>(0, null, articles);
+		} else {
+			List<String> messages = new ArrayList<>();
+			messages.add("Pas de travail info enregistrés");
+			reponse = new Reponse<List<Articles>>(2, messages, new ArrayList<>());
+		}
+
+	} catch (Exception e) {
+		reponse = new Reponse<List<Articles>>(1, Static.getErreursForException(e), new ArrayList<>());
+	}
+	return jsonMapper.writeValueAsString(reponse);
+
+}
+//recherche par prix min et prix max
+@GetMapping("/recherche")
+public String recherche(
+		@RequestParam(value = "prixmin") double prixmin, 
+		@RequestParam(value = "prixmax") double prixmax) throws JsonProcessingException {
+	Reponse<List<Articles>> reponse;
+	try {
+		List<Articles> articles = articleMetier.recherchePrixMax(prixmin, prixmax);
+		if (!articles.isEmpty()) {
+			reponse = new Reponse<List<Articles>>(0, null, articles);
+		} else {
+			List<String> messages = new ArrayList<>();
+			messages.add("Pas de Produit enregistrés");
+			reponse = new Reponse<List<Articles>>(1, messages, new ArrayList<>());
+		}
+
+	} catch (Exception e) {
+		reponse = new Reponse<>(1, Static.getErreursForException(e), null);
+	}
+	return jsonMapper.writeValueAsString(reponse);
+
+}
+
 }

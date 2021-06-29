@@ -82,4 +82,28 @@ PasswordEncoder passwordEncoder;
 		return personneRepository.existsByEmail(email);
 	}
 
+	@Override
+	public void createVerificationToken(Personne personne, String token) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Personne getPersonne(String verificationToken) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String validateVerificationToken(String token) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Personne findByEmail(String email) {
+		// TODO Auto-generated method stub
+		return personneRepository.findByEmail(email).get();
+	}
+
 }

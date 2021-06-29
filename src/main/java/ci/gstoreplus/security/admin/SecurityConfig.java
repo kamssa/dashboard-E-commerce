@@ -68,7 +68,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                     .and()
                 .authorizeRequests()
-                    .antMatchers("/api/auth/**","/api/role/**","/api/image/**","/api/detailArticles/**")
+                    .antMatchers("/api/auth/**","/api/role/**","/api/image/**",
+                    		"/api/detailArticles/**","/api/order/**",
+                    		"/api/ligneCommande/**",
+                    		"/api/paiement/**","/api/payer/**","/api/getDistinctSc/**","/api/getDistinctc/**")
                         .permitAll()
                         .antMatchers(HttpMethod.GET, "/api/categories/**",
                         		"/api/getProduitByIdCategories/**", 
@@ -76,7 +79,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         		"/api/produitByIdCategorie/**", 
                         		"/api/articleByIdProduit/**",
                         		"/api/detailArticleByIdArticle/**",
-                        		"/api/imageDetailByIdDetail/**","/api/sousCategorieByIdCategorie/**").permitAll()
+                        		"/api/imageDetailByIdDetail/**",
+                        		"/api/sousCategorieByIdCategorie/**",
+                        		"/api/rechemc/**","/api/recherche/**",
+                        		"/api/sousCategoriesByNom/**","/api/getClient/**").permitAll()
                     .anyRequest()
                         .authenticated();
 

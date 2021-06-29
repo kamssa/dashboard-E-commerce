@@ -33,7 +33,7 @@ public class ClientMetirImpl implements ClientMetier {
 
 		@Override
 		public Personne creer(Personne p) throws InvalideGstoreException {
-			System.out.println("admin a enregistrer" + ":" + p);
+			System.out.println("Client a été enregistrer" + ":" + p);
 			if ((p.getEmail().equals(null)) || (p.getEmail() == "")) {
 				throw new InvalideGstoreException("cet email ne peut etre null");
 			}
@@ -54,19 +54,11 @@ public class ClientMetirImpl implements ClientMetier {
 
 		@Override
 		public Personne modifier(Personne modif) throws InvalideGstoreException {
-			Optional<Personne> personne = personneRepository.findById(modif.getId());
-			if (personne.isPresent()) {
-
-				if (personne.get().getVersion() != modif.getVersion()) {
-					throw new InvalideGstoreException("cette personne a deja ete modifier");
+			Optional<Personne> p = personneRepository.findById(modif.getId());
+				modif.setPassword(p.get().getPassword());
+				modif.setType(p.get().getType());
+               return  personneRepository.save(modif);
 				}
-
-			} else
-				throw new InvalideGstoreException("modif est un objet null");
-
-			
-			return personneRepository.save(modif);
-		}
 
 		@Override
 		public List<Personne> findAll() {

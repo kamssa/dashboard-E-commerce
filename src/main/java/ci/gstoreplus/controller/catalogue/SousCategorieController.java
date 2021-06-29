@@ -1,7 +1,10 @@
 package ci.gstoreplus.controller.catalogue;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -107,7 +110,7 @@ public class SousCategorieController {
 
 	}
 
-    ////////recuperer une categorie  par son id
+	//////// recuperer une categorie par son id
 	@GetMapping("/sousCategories/{id}")
 	public String getById(@PathVariable Long id) throws JsonProcessingException {
 		// Annotation @PathVariable permet de recuperer le paremettre dans URI
@@ -121,6 +124,7 @@ public class SousCategorieController {
 		return jsonMapper.writeValueAsString(reponse);
 
 	}
+
 	@GetMapping("/sousCategorieByIdCategorie/{id}")
 	public String getByIdSousCategorieByIdCat(@PathVariable Long id) throws JsonProcessingException {
 		Reponse<List<SousCategories>> reponse;
@@ -140,7 +144,7 @@ public class SousCategorieController {
 		return jsonMapper.writeValueAsString(reponse);
 	}
 
-        //get all categories
+	// get all categories
 	@GetMapping("/sousCategories")
 	public String findAll() throws JsonProcessingException {
 		Reponse<List<SousCategories>> reponse;
@@ -160,20 +164,54 @@ public class SousCategorieController {
 		return jsonMapper.writeValueAsString(reponse);
 
 	}
+
 	// supprimer une categorie
-		@DeleteMapping("/sousCategories/{id}")
-		public String supprimer(@PathVariable("id") Long id) throws JsonProcessingException {
+	@DeleteMapping("/sousCategories/{id}")
+	public String supprimer(@PathVariable("id") Long id) throws JsonProcessingException {
 
-			Reponse<Boolean> reponse = null;
+		Reponse<Boolean> reponse = null;
 
-			try {
+		try {
 
-				reponse = new Reponse<Boolean>(0, null, sousCategorieMetier.supprimer(id));
+			reponse = new Reponse<Boolean>(0, null, sousCategorieMetier.supprimer(id));
 
-			} catch (RuntimeException e1) {
-				reponse = new Reponse<>(3, Static.getErreursForException(e1), null);
-			}
-
-			return jsonMapper.writeValueAsString(reponse);
+		} catch (RuntimeException e1) {
+			reponse = new Reponse<>(3, Static.getErreursForException(e1), null);
 		}
+
+		return jsonMapper.writeValueAsString(reponse);
+	}
+
+////////////get distinct abonnement
+	@GetMapping("/getDistinctc")
+	public Map<Categories, List<SousCategories>> getOccurenceAbonne()
+			throws JsonProcessingException, InvalideGstoreException {
+		Map<Categories, List<SousCategories>> reponse = new HashMap<Categories, List<SousCategories>>();
+		SousCategories sc = null;
+		Categories c = null;
+		try {
+			Map<Categories, List<SousCategories>> pers = sousCategorieMetier.uneOcurrenceSc();
+			reponse = pers;
+
+		} catch (Exception e) {
+			reponse = (Map<Categories, List<SousCategories>>) new IOException("");
+		}
+		return reponse;
+
+	}
+
+    ////////recuperer une sous categorie par son nom
+	@GetMapping("/sousCategoriesByNom/{nom}")
+	public String getByNom(@PathVariable String nom) throws JsonProcessingException {
+		Reponse<SousCategories> reponse;
+		try {
+			SousCategories sc = sousCategorieMetier.findByNom(nom);
+			reponse = new Reponse<SousCategories>(1, null, sc);
+		} catch (Exception e) {
+			reponse = new Reponse<>(1, Static.getErreursForException(e), null);
+		}
+		return jsonMapper.writeValueAsString(reponse);
+
+	}
+
 }

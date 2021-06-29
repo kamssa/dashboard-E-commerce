@@ -12,7 +12,7 @@ import ci.gstoreplus.models.DateAudit;
 public class AbstractEntity extends DateAudit {
 	private static final long serialVersionUID = 1L;
 	 @Id
-	 @GeneratedValue(strategy = GenerationType.AUTO)
+	 @GeneratedValue(strategy = GenerationType.SEQUENCE)
 	 protected Long id;
 	 @Version
 	 protected Long version;

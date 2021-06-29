@@ -1,6 +1,7 @@
 package ci.gstoreplus.metier.catalogue;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -65,6 +66,21 @@ private ArticleRepository articleRepository;
 	@Override
 	public List<Articles> findArtclesByIdProduits(long id) {
 		return articleRepository.findArtclesByIdProduits(id);
+	}
+
+	@Override
+	public List<Articles> findArtclesByMc(String nom) {
+		// TODO Auto-generated method stub
+		return articleRepository.findArtclesByMc(nom);
+	}
+	@Override
+	public List<Articles> recherchePrixMax(double prixmin, double prixmax) {
+		List<Articles> arts = null;
+		List<Articles> articles = articleRepository.findAll();
+		arts = articles.stream().filter(t -> t.getPrixUnitaire() > prixmin)
+	    		.filter(t -> t.getPrixUnitaire()< prixmax)
+	    		.collect(Collectors.toList());
+	    return arts;			
 	}
 
 }

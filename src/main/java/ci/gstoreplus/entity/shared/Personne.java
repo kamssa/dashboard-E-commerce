@@ -72,7 +72,7 @@ public class Personne extends AbstractEntity {
 	@JoinTable(name = "user_roles", 
 	joinColumns = @JoinColumn(name = "user_id"), 
 	inverseJoinColumns = @JoinColumn(name = "role_id"))
-	private Set<Role> roles = new HashSet<>();
+	private Set<Role> roles = new HashSet<Role>();
 
 	public Personne() {
 		super();
@@ -85,13 +85,33 @@ public class Personne extends AbstractEntity {
 		this.password = password;
 	}
 
-	public Personne(String titre, String nom, String prenom, String email, String password) {
+	
+
+	public Personne(String titre, String nom, String prenom, @NotBlank @Email String email, String password) {
 		super();
 		this.titre = titre;
 		this.nom = nom;
 		this.prenom = prenom;
 		this.email = email;
 		this.password = password;
+	}
+
+	public Personne(String titre, String nom, String prenom, @NotBlank @Email String email, String codePays,
+			String telephone, String password, String nomComplet, boolean actived, Adresse adresse, String type,
+			Set<Role> roles) {
+		super();
+		this.titre = titre;
+		this.nom = nom;
+		this.prenom = prenom;
+		this.email = email;
+		this.codePays = codePays;
+		this.telephone = telephone;
+		this.password = password;
+		this.nomComplet = nomComplet;
+		this.actived = actived;
+		this.adresse = adresse;
+		this.type = type;
+		this.roles = roles;
 	}
 
 	public Personne(String nom, String prenom, String email, String telephone, String password, Set<Role> roles) {
@@ -104,9 +124,14 @@ public class Personne extends AbstractEntity {
 		this.roles = roles;
 	}
 	
+	
 	@PrePersist
 	public void setNomComplet() {
 		this.nomComplet = nom + " " + prenom;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public String getTitre() {
@@ -203,6 +228,94 @@ public class Personne extends AbstractEntity {
 
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + (actived ? 1231 : 1237);
+		result = prime * result + ((adresse == null) ? 0 : adresse.hashCode());
+		result = prime * result + ((codePays == null) ? 0 : codePays.hashCode());
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result + ((nom == null) ? 0 : nom.hashCode());
+		result = prime * result + ((nomComplet == null) ? 0 : nomComplet.hashCode());
+		result = prime * result + ((password == null) ? 0 : password.hashCode());
+		result = prime * result + ((prenom == null) ? 0 : prenom.hashCode());
+		result = prime * result + ((roles == null) ? 0 : roles.hashCode());
+		result = prime * result + ((telephone == null) ? 0 : telephone.hashCode());
+		result = prime * result + ((titre == null) ? 0 : titre.hashCode());
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Personne other = (Personne) obj;
+		if (actived != other.actived)
+			return false;
+		if (adresse == null) {
+			if (other.adresse != null)
+				return false;
+		} else if (!adresse.equals(other.adresse))
+			return false;
+		if (codePays == null) {
+			if (other.codePays != null)
+				return false;
+		} else if (!codePays.equals(other.codePays))
+			return false;
+		if (email == null) {
+			if (other.email != null)
+				return false;
+		} else if (!email.equals(other.email))
+			return false;
+		if (nom == null) {
+			if (other.nom != null)
+				return false;
+		} else if (!nom.equals(other.nom))
+			return false;
+		if (nomComplet == null) {
+			if (other.nomComplet != null)
+				return false;
+		} else if (!nomComplet.equals(other.nomComplet))
+			return false;
+		if (password == null) {
+			if (other.password != null)
+				return false;
+		} else if (!password.equals(other.password))
+			return false;
+		if (prenom == null) {
+			if (other.prenom != null)
+				return false;
+		} else if (!prenom.equals(other.prenom))
+			return false;
+		if (roles == null) {
+			if (other.roles != null)
+				return false;
+		} else if (!roles.equals(other.roles))
+			return false;
+		if (telephone == null) {
+			if (other.telephone != null)
+				return false;
+		} else if (!telephone.equals(other.telephone))
+			return false;
+		if (titre == null) {
+			if (other.titre != null)
+				return false;
+		} else if (!titre.equals(other.titre))
+			return false;
+		if (type == null) {
+			if (other.type != null)
+				return false;
+		} else if (!type.equals(other.type))
+			return false;
+		return true;
 	}
 
 	@Override

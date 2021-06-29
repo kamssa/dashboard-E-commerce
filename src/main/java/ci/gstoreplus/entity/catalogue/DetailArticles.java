@@ -13,6 +13,9 @@ import ci.gstoreplus.entity.shared.AbstractEntity;
 @Entity
 public class DetailArticles extends AbstractEntity{
 	private static final long serialVersionUID = 1L;
+	private String couleur;
+	private String taille;
+	private String marque;
 	private String description;
 	
 	@OneToOne(fetch = FetchType.LAZY, cascade =CascadeType.MERGE)
