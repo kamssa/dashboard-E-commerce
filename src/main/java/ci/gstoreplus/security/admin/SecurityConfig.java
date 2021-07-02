@@ -71,7 +71,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/api/auth/**","/api/role/**","/api/image/**",
                     		"/api/detailArticles/**","/api/order/**",
                     		"/api/ligneCommande/**",
-                    		"/api/paiement/**","/api/payer/**","/api/getDistinctSc/**","/api/getDistinctc/**")
+                    		"/api/paiement/**","/api/payer/**",
+                    		"/api/getDistinctSc/**","/api/getDistinctc/**",  "/api/ville/**","/api/region/**")
                         .permitAll()
                         .antMatchers(HttpMethod.GET, "/api/categories/**",
                         		"/api/getProduitByIdCategories/**", 
@@ -82,7 +83,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         		"/api/imageDetailByIdDetail/**",
                         		"/api/sousCategorieByIdCategorie/**",
                         		"/api/rechemc/**","/api/recherche/**",
-                        		"/api/sousCategoriesByNom/**","/api/getClient/**").permitAll()
+                        		"/api/sousCategoriesByNom/**",
+                        		"/api/getClient/**", "/api/ville/**","/api/region/**").permitAll()
                     .anyRequest()
                         .authenticated();
 

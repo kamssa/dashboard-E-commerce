@@ -249,6 +249,17 @@ public class PaiementController {
 	return jsonMapper.writeValueAsString(reponse);
 
 }
+////////recuperer un paiement par son id
+@PostMapping("/paiement/{id}")
+public String cinetPay(@PathVariable Long id) throws JsonProcessingException {
+// Annotation @PathVariable permet de recuperer le paremettre dans URI
+Reponse<Paiement> reponse = null;
+
+    
+
+return jsonMapper.writeValueAsString(reponse);
+
+}
 	// supprimer une categorie
 		@DeleteMapping("/paiement/{id}")
 		public String supprimer(@PathVariable("id") Long id) throws JsonProcessingException {
