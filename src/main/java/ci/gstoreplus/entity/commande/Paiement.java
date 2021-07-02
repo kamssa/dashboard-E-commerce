@@ -114,7 +114,7 @@ public class Paiement extends AbstractEntity{
 	public String getCpm_trans_id() {
 		return cpm_trans_id;
 	}
-
+   
 	public void setCpm_trans_id(String cpm_trans_id) {
 		this.cpm_trans_id = cpm_trans_id;
 	}

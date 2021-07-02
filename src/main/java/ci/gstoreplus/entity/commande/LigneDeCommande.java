@@ -14,7 +14,7 @@ public class LigneDeCommande extends AbstractEntity{
 	private static final long serialVersionUID = 1L;
 	 	@ManyToOne
 	    private Articles articles;
-	    private int quantity;
+	    private double quantity;
 	    private double price;
 	    private double total;
 	    @ManyToOne
@@ -36,10 +36,12 @@ public class LigneDeCommande extends AbstractEntity{
 		public void setArticles(Articles articles) {
 			this.articles = articles;
 		}
-		public int getQuantity() {
+		
+		
+		public double getQuantity() {
 			return quantity;
 		}
-		public void setQuantity(int quantity) {
+		public void setQuantity(double quantity) {
 			this.quantity = quantity;
 		}
 		public double getPrice() {

@@ -33,41 +33,39 @@ public class OrderController {
 	@Autowired
 	private ObjectMapper jsonMapper;
 	
-    @PostMapping("/orders")
-    public String saveOrder(@RequestBody OrderForm orderForm) throws JsonProcessingException{
-        System.out.println("Voir la commande:" + orderForm);
+	 @PostMapping("/orders")
+	    public String saveOrder(@RequestBody OrderForm orderForm) throws JsonProcessingException{
+	        System.out.println("Voir la commande:" + orderForm);
 
-    	Reponse<Commande> reponse;
-		System.out.println(orderForm);
-		try {
+	    	Reponse<Commande> reponse;
+			System.out.println(orderForm);
+			try {
 
-			Commande cat = orderMetier.creer(orderForm);
-			System.out.println("order enregistrer:" +cat);
-			List<String> messages = new ArrayList<>();
-			messages.add(String.format("%s  à été créer avec succes", cat.getId()));
-			reponse = new Reponse<Commande>(0, messages, cat);
+				Commande cat = orderMetier.creer(orderForm);
+				System.out.println("order enregistrer:" +cat);
+				List<String> messages = new ArrayList<>();
+				messages.add(String.format("%s  à été créer avec succes", cat.getId()));
+				reponse = new Reponse<Commande>(0, messages, cat);
 
-		} catch (InvalideGstoreException e) {
+			} catch (InvalideGstoreException e) {
 
-			reponse = new Reponse<Commande>(1, Static.getErreursForException(e), null);
+				reponse = new Reponse<Commande>(1, Static.getErreursForException(e), null);
+			}
+			return jsonMapper.writeValueAsString(reponse);
+	    }
+	    @DeleteMapping("/order/{id}")
+		public String supprimer(@PathVariable("id") Long id) throws JsonProcessingException {
+
+			Reponse<Boolean> reponse = null;
+
+			try {
+
+				reponse = new Reponse<Boolean>(0, null, orderMetier.supprimer(id));
+
+			} catch (RuntimeException e1) {
+				reponse = new Reponse<>(3, Static.getErreursForException(e1), null);
+			}
+
+			return jsonMapper.writeValueAsString(reponse);
 		}
-		return jsonMapper.writeValueAsString(reponse);
-    }
-    @DeleteMapping("/order/{id}")
-	public String supprimer(@PathVariable("id") Long id) throws JsonProcessingException {
-
-		Reponse<Boolean> reponse = null;
-
-		try {
-
-			reponse = new Reponse<Boolean>(0, null, orderMetier.supprimer(id));
-
-		} catch (RuntimeException e1) {
-			reponse = new Reponse<>(3, Static.getErreursForException(e1), null);
-		}
-
-		return jsonMapper.writeValueAsString(reponse);
-	}
-
-
 }

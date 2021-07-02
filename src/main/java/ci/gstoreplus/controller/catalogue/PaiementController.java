@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.websocket.server.PathParam;
 
@@ -28,11 +29,14 @@ import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import ci.gstoreplus.entity.catalogue.Articles;
 import ci.gstoreplus.entity.commande.Commande;
 import ci.gstoreplus.entity.commande.Paiement;
 import ci.gstoreplus.exception.InvalideGstoreException;
 import ci.gstoreplus.metier.commande.IOrderMetier;
 import ci.gstoreplus.metier.commande.IPaiementMetier;
+import ci.gstoreplus.metier.commande.OrderForm;
 import ci.gstoreplus.models.Reponse;
 import ci.gstoreplus.models.ReponsePaiement;
 import ci.gstoreplus.utilitaire.Static;
@@ -66,23 +70,25 @@ public class PaiementController {
 	}
 
 	@PostMapping("/paiement")
-	public String creer(@RequestBody Commande command)
+	public String creer(@RequestBody OrderForm orderForm , @RequestParam Long id)
 			throws InvalideGstoreException, IOException {
+		System.out.println("commande"+ orderForm);
 		Reponse<ResponseEntity<String>> reponse = null;
 		Reponse<Paiement> reponsePaie = null;
 		ReponsePaiement<Paiement, String> reponsePaiement = null;
 		Reponse<String> reponseSignature = null;
 		Reponse<List<String>> listString;
-		Commande commande = commandeMetier.findById(command.getId());
+		Commande commande = commandeMetier.findById(id);
 		System.out.println("Voir la commande"+ commande);
 		Paiement paye = null;
         Paiement p= new Paiement();
         System.out.println("Voir le paiement créer"+ p);
         double montantCommande = commande.getTotalAmount();
 		int montant = (int) montantCommande;
+		 String trans_id = UUID.randomUUID().toString();
 		p.setCpm_amount(montant);
 		p.setCommande(commande);
-		p.setCpm_trans_id("1iphone");
+		p.setCpm_trans_id(trans_id);
 		
 
 		try {
@@ -108,11 +114,6 @@ public class PaiementController {
 					headers);
 			RestTemplate restTemplate = new RestTemplate();
 			ResponseEntity<String> response = restTemplate.postForEntity(url, request, String.class);
-			
-			//Paiement retour= new Paiement();
-			//paye.setCpm_amount(paiement.getCpm_amount());
-			//paye.setCpm_trans_date(paiement.getCpm_trans_date());
-			//paye.setCpm_trans_id(paiement.getCpm_trans_id());
 			List<String> messages = new ArrayList<>();
 			messages.add(String.format("%s %s %s", p.getCpm_trans_date(),p.getCpm_trans_id(),p.getCpm_amount()));
 			String signature = response.getBody();
@@ -234,6 +235,20 @@ public class PaiementController {
 			return jsonMapper.writeValueAsString(reponse);
 			
 		}
+ ////////recuperer un paiement par son id
+ @GetMapping("/paiement/{id}")
+ public String getPaiById(@PathVariable Long id) throws JsonProcessingException {
+	// Annotation @PathVariable permet de recuperer le paremettre dans URI
+	Reponse<Paiement> reponse = null;
+
+	reponse = getPaiementById(id);
+	if (reponse.getBody() == null) {
+		throw new RuntimeException("pas d'enregistrement pour ce paiement");
+	}
+
+	return jsonMapper.writeValueAsString(reponse);
+
+}
 	// supprimer une categorie
 		@DeleteMapping("/paiement/{id}")
 		public String supprimer(@PathVariable("id") Long id) throws JsonProcessingException {

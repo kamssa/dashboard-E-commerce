@@ -1,8 +1,6 @@
 package ci.gstoreplus.entity.commande;
 
 import java.time.LocalDateTime;
-
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -13,6 +11,7 @@ import javax.persistence.PreUpdate;
 import ci.gstoreplus.entity.shared.AbstractEntity;
 import ci.gstoreplus.entity.shared.Personne;
 
+
 @Entity
 public class Commande extends AbstractEntity {
 
@@ -21,7 +20,7 @@ public class Commande extends AbstractEntity {
 	private LocalDateTime date;
     private String motif;
 	private Double totalAmount;
-	private String numero;
+	private long numero;
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_Personne")
 	private Personne personne;
@@ -39,7 +38,7 @@ public class Commande extends AbstractEntity {
 		this.totalAmount = totalAmount;
 	}
 
-  public Commande(boolean paye, LocalDateTime date, String motif, Double totalAmount, String numero,
+  public Commande(boolean paye, LocalDateTime date, String motif, Double totalAmount, long numero,
 			Personne personne) {
 		super();
 		this.paye = paye;
@@ -49,23 +48,15 @@ public class Commande extends AbstractEntity {
 		this.numero = numero;
 		this.personne = personne;
 	}
-
-
-
-	@PrePersist
-	@PreUpdate
-	public void setDate() {
-		this.date = LocalDateTime.now();
-	}
-
-	
-	
-	public String getNumero() {
+ 
+		public long getNumero() {
 		return numero;
 	}
-
-	public void setNumero(String numero) {
-		this.numero = numero;
+	@PrePersist
+	@PreUpdate
+	public void setNumero() {
+		this.numero = System.currentTimeMillis();
+		this.date = LocalDateTime.now();
 	}
 
 	public String getMotif() {
@@ -120,7 +111,7 @@ public class Commande extends AbstractEntity {
 		int result = super.hashCode();
 		result = prime * result + ((date == null) ? 0 : date.hashCode());
 		result = prime * result + ((motif == null) ? 0 : motif.hashCode());
-		result = prime * result + ((numero == null) ? 0 : numero.hashCode());
+		result = prime * result + (int) (numero ^ (numero >>> 32));
 		result = prime * result + (paye ? 1231 : 1237);
 		result = prime * result + ((personne == null) ? 0 : personne.hashCode());
 		result = prime * result + ((totalAmount == null) ? 0 : totalAmount.hashCode());
@@ -148,10 +139,7 @@ public class Commande extends AbstractEntity {
 				return false;
 		} else if (!motif.equals(other.motif))
 			return false;
-		if (numero == null) {
-			if (other.numero != null)
-				return false;
-		} else if (!numero.equals(other.numero))
+		if (numero != other.numero)
 			return false;
 		if (paye != other.paye)
 			return false;
@@ -175,6 +163,9 @@ public class Commande extends AbstractEntity {
 		return "Commande [paye=" + paye + ", date=" + date + ", motif=" + motif + ", totalAmount=" + totalAmount
 				+ ", numero=" + numero + ", personne=" + personne + "]";
 	}
+
+
+
 
 
 }

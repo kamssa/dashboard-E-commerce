@@ -22,6 +22,7 @@ public class Articles extends AbstractEntity {
 	@Column(name = "prix_unitaire")
 	private double prixUnitaire;
 	private String pathImage;
+	private double quantity;
 	@ManyToOne(fetch = FetchType.LAZY, cascade =CascadeType.MERGE)
 	@JoinColumn(name = "id_produits", nullable = false)
 	private Produits produits;
@@ -60,6 +61,14 @@ public class Articles extends AbstractEntity {
 
 	public String getNouveau() {
 		return nouveau;
+	}
+
+	public double getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(double quantity) {
+		this.quantity = quantity;
 	}
 
 	public void setNouveau(String nouveau) {
@@ -115,10 +124,10 @@ public class Articles extends AbstractEntity {
 
 	@Override
 	public String toString() {
-		return "Articles [code=" + code + ", nom=" + nom + ", description=" + description + ", prixUnitaire="
-				+ prixUnitaire + ", produits=" + produits + ", idProduits=" + idProduits + "]";
+		return "Articles [code=" + code + ", nom=" + nom + ", description=" + description + ", promo=" + promo
+				+ ", nouveau=" + nouveau + ", prixUnitaire=" + prixUnitaire + ", pathImage=" + pathImage + ", quantity="
+				+ quantity + ", produits=" + produits + ", idProduits=" + idProduits + "]";
 	}
 
 	
-
 }
