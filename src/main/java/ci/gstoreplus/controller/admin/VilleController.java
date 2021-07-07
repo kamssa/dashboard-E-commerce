@@ -107,7 +107,7 @@ public class VilleController {
  	}
  	// recherche les departements par id
  		@GetMapping("/ville/{id}")
- 		public String getdepatermentById(@PathVariable("id") Long id) throws JsonProcessingException {
+ 		public String getVById(@PathVariable("id") Long id) throws JsonProcessingException {
 
  			Reponse<Ville> reponse;
 
@@ -115,7 +115,7 @@ public class VilleController {
 
  				Ville p = villeMetier.findById(id);
  				List<String> messages = new ArrayList<>();
- 				messages.add(String.format(" à été créer avec succes"));
+ 				messages.add(String.format(" ville recuperer"));
  				reponse = new Reponse<Ville>(0, messages, p);
 
  			} catch (Exception e) {

@@ -57,6 +57,7 @@ public class ClientMetirImpl implements ClientMetier {
 			Optional<Personne> p = personneRepository.findById(modif.getId());
 				modif.setPassword(p.get().getPassword());
 				modif.setType(p.get().getType());
+				
                return  personneRepository.save(modif);
 				}
 

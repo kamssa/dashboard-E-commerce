@@ -20,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import ci.gstoreplus.entity.catalogue.Articles;
 import ci.gstoreplus.entity.catalogue.ImageDetail;
 import ci.gstoreplus.exception.InvalideGstoreException;
 import ci.gstoreplus.metier.catalogue.CloudinaryService;
